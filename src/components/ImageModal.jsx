@@ -1,0 +1,41 @@
+import React, { useState } from "react";
+
+const ImageModal = ({ src, alt = "Image" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      {/* Thumbnail Image */}
+      <img
+        src={src}
+        alt={alt}
+        onClick={() => setIsOpen(true)}
+        className="w-24 h-24 cursor-pointer object-cover rounded-lg shadow-md transition duration-300"
+      />
+
+      {/* Modal */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <div className="relative max-w-3xl w-full p-4">
+            {/* Close Button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-4 right-4 text-white text-2xl font-bold hover:text-gray-300 transition"
+            >
+              &times;
+            </button>
+
+            {/* Full Image */}
+            <img
+              src={src}
+              alt={alt}
+              className="w-full h-auto rounded-xl shadow-xl border-4 border-white"
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default ImageModal;
