@@ -90,7 +90,7 @@ const data = [
     timing: "6:38 PM",
     image_url:"https://placehold.co/600x400"
   }
-];
+]; 
 
 const data2 = [
   {
@@ -180,7 +180,7 @@ const AdminVendorPage = () => {
   }
 
   return (
-    <div className="p-6 min-h-screen mx-auto bg-gray-100 max-w-3/4">
+    <div className="p-6 min-h-screen mx-auto bg-gray-100 w-full md:max-w-3/4">
       {/* Tabs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
         {tabs.map((tab) => (
@@ -202,12 +202,12 @@ const AdminVendorPage = () => {
 
       {/* Search Bar */}
       <div className="relative mb-8 flex justify-center">
-        <FaSearch className="absolute left-18 top-3.5 text-gray" />
+        <FaSearch className="absolute left-5 sm:left-4 top-3.5 text-gray" />
         <input
           type="text"
           placeholder="Search by Name/Number"
-          className="w-[90%] pl-11 pr-4 py-2 rounded-full border border-gray text-dark
-        focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200"
+          className="w-full pl-11 pr-4 py-2 rounded-lg border-1 border-gray text-dark
+        focus:outline-none focus:border-gray-dark focus:border-2 transition-all duration-200"
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {

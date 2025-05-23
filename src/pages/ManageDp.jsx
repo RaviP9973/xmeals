@@ -55,18 +55,20 @@ const ManageDp = () => {
       </div> */}
 
       {/* Detailed Vendor Card */}
-      <div className="bg-white  rounded-xl p-6 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4 transition-transform duration-300 hover:scale-[1.005]">
+      <div className="bg-white  rounded-xl p-6 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4 transition-transform duration-300">
         {/* Left Side - Image and Info */}
         <div className="flex flex-col sm:flex-row items-center gap-6">
           {/* <div className="w-24 h-24 bg-gray rounded-xl"></div> */}
-          <ImageModal src={'https://placehold.co/600x400'}
+          <ImageModal
+            src={'https://placehold.co/600x400'}
             className="w-24 h-24 bg-gray rounded-xl object-cover"
-            alt="" />
+            alt=""
+          />
           <div className="space-y-1 text-dark">
             <p><span className="font-semibold">Name:</span> John Doe</p>
             <p><span className="font-semibold">DOB:</span> 01/01/1980</p>
             <p><span className="font-semibold">Address:</span> 123 Main Street</p>
-            <button className="mt-2 px-4 py-1 flex items-center gap-2 bg-info hover:bg-cyan text-white rounded-full text-sm font-medium transition">
+            <button className="mt-2 px-4 py-2 flex items-center gap-2 bg-info hover:bg-cyan text-white rounded-lg text-sm font-medium transition">
               <FaIdCard /> ID Card
             </button>
           </div>
@@ -77,17 +79,17 @@ const ManageDp = () => {
           <p className="text-dark font-medium">Status: Pending</p>
           <p className="text-gray text-sm">Orders with him: 3</p>
           <div className="flex flex-wrap justify-between gap-2 pt-2">
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-success hover:bg-green-700 text-white rounded-full text-sm transition"
+            <button className="cursor-pointer flex items-center justify-start gap-2 px-4 py-2 bg-white hover:bg-gray-100 text-sm font-medium rounded-lg border-2 border-gray-200 "
                 onClick={handleAprove}
             >
               <FaCheckCircle /> Approve
             </button>
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-danger hover:bg-red-700 text-white rounded-full text-sm transition"
+            <button className="cursor-pointer flex items-center justify-start gap-2 px-4 py-2 bg-white hover:bg-gray-100 text-sm font-medium rounded-lg border-2 border-gray-200 "
             onClick={handleReject}
             >
               <FaTimes /> Reject
             </button>
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-secondary hover:bg-gray-600 text-white rounded-full text-sm transition"
+            <button className="cursor-pointer flex items-center justify-start gap-2 px-4 py-2 bg-white hover:bg-gray-100 text-sm font-medium rounded-lg border-2 border-gray-200 "
             onClick={handleBlock}
             >
               <FaBan /> Block

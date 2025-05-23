@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import useOnClickOutside from "../hooks/useOnCllickOutside";
 
 const ImageModal = ({ src, alt = "Image" }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef(null);
 
+  useOnClickOutside(ref, () => {
+    if (isOpen) {
+      setIsOpen(false);
+    }
+  });
   return (
     <>
       {/* Thumbnail Image */}
@@ -30,6 +37,7 @@ const ImageModal = ({ src, alt = "Image" }) => {
               src={src}
               alt={alt}
               className="w-full h-auto rounded-xl shadow-xl border-4 border-white"
+              ref={ref}
             />
           </div>
         </div>
