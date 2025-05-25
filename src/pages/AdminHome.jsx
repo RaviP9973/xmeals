@@ -14,7 +14,7 @@ const AdminHome = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center gap-8">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center gap-8 ">
       <div className="max-w-2xl mx-auto space-y-4">
         <button
           className="w-full py-3 px-6 bg-primary hover:bg-[#0056b3] text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2 "

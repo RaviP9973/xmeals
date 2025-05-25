@@ -8,6 +8,7 @@ import {
   FaUserSlash,
 } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import NoDataFound from "../components/NoData";
 
 const data = [
   {
@@ -16,7 +17,7 @@ const data = [
     number: "551-769-9398",
     address: "PO Box 99110",
     timing: "7:20 PM",
-    image_url:"https://placehold.co/600x400"
+    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
   },
   {
     id: 2,
@@ -24,7 +25,7 @@ const data = [
     number: "711-598-1815",
     address: "17th Floor",
     timing: "2:18 PM",
-    image_url:"https://placehold.co/600x400"
+    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
   },
   {
     id: 3,
@@ -32,7 +33,7 @@ const data = [
     number: "320-531-3187",
     address: "PO Box 37221",
     timing: "11:08 PM",
-    image_url:"https://placehold.co/600x400"
+    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
   },
   {
     id: 4,
@@ -40,7 +41,7 @@ const data = [
     number: "562-173-5958",
     address: "Apt 788",
     timing: "9:28 PM",
-    image_url:"https://placehold.co/600x400"
+    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
   },
   {
     id: 5,
@@ -48,7 +49,7 @@ const data = [
     number: "616-366-0553",
     address: "PO Box 5323",
     timing: "4:24 PM",
-    image_url:"https://placehold.co/600x400"
+    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
   },
   {
     id: 6,
@@ -56,7 +57,7 @@ const data = [
     number: "486-236-4128",
     address: "Apt 1591",
     timing: "9:33 AM",
-    image_url:"https://placehold.co/600x400"
+    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
   },
   {
     id: 7,
@@ -64,7 +65,7 @@ const data = [
     number: "949-206-0973",
     address: "Suite 59",
     timing: "8:07 PM",
-    image_url:"https://placehold.co/600x400"
+    image_url:["https://placehold.co/600x400", "https://placehold.co/600x400" ]
   },
   {
     id: 8,
@@ -72,7 +73,7 @@ const data = [
     number: "710-889-1118",
     address: "Suite 67",
     timing: "6:39 AM",
-    image_url:"https://placehold.co/600x400"
+    image_url:["https://placehold.co/600x400", "https://placehold.co/600x400" ]
   },
   {
     id: 9,
@@ -80,7 +81,7 @@ const data = [
     number: "795-609-3401",
     address: "Suite 69",
     timing: "2:04 AM",
-    image_url:"https://placehold.co/600x400"
+    image_url:["https://placehold.co/600x400", "https://placehold.co/600x400" ]
   },
   {
     id: 10,
@@ -88,9 +89,9 @@ const data = [
     number: "844-974-0987",
     address: "Room 1439",
     timing: "6:38 PM",
-    image_url:"https://placehold.co/600x400"
-  }
-]; 
+    image_url:["https://placehold.co/600x400", "https://placehold.co/600x400" ]
+  },
+];
 
 const data2 = [
   {
@@ -99,20 +100,21 @@ const data2 = [
     number: "551-769-9398",
     address: "PO Box 99110",
     timing: "7:20 PM",
-    image_url:"https://placehold.co/600x400"
+    image_url:["https://placehold.co/600x400", "https://placehold.co/600x400" ]
   },
 ];
 
 const tabs = [
-    { id: "existing", label: "Existing", icon: <FaUserCheck /> },
-    { id: "requests", label: "Requests", icon: <FaUserClock /> },
-    { id: "rejected", label: "Rejected", icon: <FaUserTimes /> },
-    { id: "blocked", label: "Blocked", icon: <FaUserSlash /> },
-  ];
+  { id: "existing", label: "Existing", icon: <FaUserCheck /> },
+  { id: "requests", label: "Requests", icon: <FaUserClock /> },
+  { id: "rejected", label: "Rejected", icon: <FaUserTimes /> },
+  { id: "blocked", label: "Blocked", icon: <FaUserSlash /> },
+];
 const AdminVendorPage = () => {
-
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState( location.state?.defaultTab || "existing");
+  const [activeTab, setActiveTab] = useState(
+    location.state?.defaultTab || "existing"
+  );
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
 
@@ -120,31 +122,29 @@ const AdminVendorPage = () => {
   const [totalCount, setTotalCount] = useState(50);
   const pageSize = 10;
 
-  const [searchQuery,setSearchQuery] = useState("");
-// const location = useLocation();
-// const defaultTab = location.state?.defaultTab || "pending";
-//   useEffect(() => {
-//   const fetchVendors = async () => {
-//     const from = (currentPage - 1) * pageSize;
-//     const to = from + pageSize - 1;
+  const [searchQuery, setSearchQuery] = useState("");
+  // const location = useLocation();
+  // const defaultTab = location.state?.defaultTab || "pending";
+  //   useEffect(() => {
+  //   const fetchVendors = async () => {
+  //     const from = (currentPage - 1) * pageSize;
+  //     const to = from + pageSize - 1;
 
-//     const { data, count, error } = await supabase
-//       .from("vendors")
-//       .select("*", { count: "exact" })
-//       .range(from, to);
+  //     const { data, count, error } = await supabase
+  //       .from("vendors")
+  //       .select("*", { count: "exact" })
+  //       .range(from, to);
 
-//     if (error) {
-//       console.error("Error fetching vendors:", error);
-//     } else {
-//       setVendors(data);
-//       setTotalCount(count);
-//     }
-//   };
+  //     if (error) {
+  //       console.error("Error fetching vendors:", error);
+  //     } else {
+  //       setVendors(data);
+  //       setTotalCount(count);
+  //     }
+  //   };
 
-//   fetchVendors();
-// }, [currentPage]);
-
-
+  //   fetchVendors();
+  // }, [currentPage]);
 
   const onTabChange = async () => {
     setLoading(true);
@@ -177,7 +177,7 @@ const AdminVendorPage = () => {
       vendor.name.toLowerCase().includes(query.toLowerCase())
     );
     setVendors(filteredVendors);
-  }
+  };
 
   return (
     <div className="p-6 min-h-screen mx-auto bg-gray-100 w-full md:max-w-3/4">
@@ -208,14 +208,14 @@ const AdminVendorPage = () => {
           placeholder="Search by Name/Number"
           className="w-full pl-11 pr-4 py-2 rounded-lg border-1 border-gray text-dark
         focus:outline-none focus:border-gray-dark focus:border-2 transition-all duration-200"
-        onChange={(e) => setSearchQuery(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            // Handle search action
-            console.log("Search query:", searchQuery);
-            handleSearch(searchQuery);
-          }
-        }}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              // Handle search action
+              console.log("Search query:", searchQuery);
+              handleSearch(searchQuery);
+            }
+          }}
         />
       </div>
 
@@ -225,15 +225,12 @@ const AdminVendorPage = () => {
       ) : vendors && vendors.length > 0 ? (
         <div className="space-y-4 animate-fade-in">
           {vendors.map((vendor) => (
-            <VendorItem
-              key={vendor.id}
-              vendor={vendor}
-            />
+            <VendorItem key={vendor.id} vendor={vendor} />
           ))}
         </div>
       ) : (
         <div className="text-center text-danger font-semibold">
-          No data found
+          <NoDataFound />
         </div>
       )}
 

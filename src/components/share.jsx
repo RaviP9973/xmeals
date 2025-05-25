@@ -16,7 +16,6 @@ const Referral = () => {
 
       console.log("userDetails", userDetails);
       setReferralCode(userDetails.referral_code);
-
   };
 
   useEffect(() => {

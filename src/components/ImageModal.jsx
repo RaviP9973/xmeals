@@ -16,13 +16,21 @@ const ImageModal = ({ src, alt = "Image" }) => {
       <img
         src={src}
         alt={alt}
-        onClick={() => setIsOpen(true)}
-        className="w-24 h-24 cursor-pointer object-cover rounded-lg shadow-md transition duration-300"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(true)
+        }}
+        className="w-32 h-32 cursor-pointer object-cover rounded-lg shadow-md transition duration-300"
       />
 
       {/* Modal */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm"
+          onClick={(e) => {
+              // setImageClicked(true);
+              e.stopPropagation();
+            }}
+        >
           <div className="relative max-w-3xl w-full p-4">
             {/* Close Button */}
             <button
