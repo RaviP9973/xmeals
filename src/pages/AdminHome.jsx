@@ -6,12 +6,19 @@ import {
   FaUserTimes,
   FaUserSlash,
 } from "react-icons/fa";
+import { BiSolidOffer } from "react-icons/bi";
+
 import { MdManageAccounts } from "react-icons/md";
 import { CiDeliveryTruck } from "react-icons/ci";
+import { ImSpoonKnife } from "react-icons/im";
+import { logout } from "../utils/auth";
+import { useAuth } from "../context/authContext";
+import { GoGraph } from "react-icons/go";
 
 
 const AdminHome = () => {
   const navigate = useNavigate();
+  const { setSession } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center gap-8 ">
@@ -30,19 +37,58 @@ const AdminHome = () => {
             })
           }
         >
-          <FaUserClock/> Vendor Requests
+          <FaUserClock /> Vendor Requests
         </button>
 
-        <button className="w-full py-3 px-6 bg-[#28a745] hover:bg-[#218838] text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2">
-          <CiDeliveryTruck className="text-lg font-bold"/> Orders (Not Yet Delivered)
+        <button className="w-full py-3 px-6 bg-[#28a745] hover:bg-[#218838] text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
+        onClick={() => {
+          navigate('/orders')
+        }}
+
+        >
+          <CiDeliveryTruck className="text-lg font-bold" /> Orders (Not Yet
+          Delivered)
         </button>
 
-        <button className="w-full py-3 px-6 bg-[#17a2b8] hover:bg-[#138496] text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
+        <button
+          className="w-full py-3 px-6 bg-[#17a2b8] hover:bg-[#138496] text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
           onClick={() => {
-            navigate("/manageDp")
+            navigate("/manageDp");
           }}
         >
-          <MdManageAccounts/> Manage Delivery Partners
+          <MdManageAccounts /> Manage Delivery Partners
+        </button>
+
+        <button
+          className="w-full py-3 px-6 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
+          onClick={() => navigate("/admin/cuisines")}
+        >
+          <ImSpoonKnife /> Manage Cuisine
+        </button>
+        <button
+          className="w-full py-3 px-6 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
+          onClick={() => navigate("/offers")}
+        >
+          <BiSolidOffer /> Manage Offers
+        </button>
+
+ <button
+          onClick={async () => {
+            navigate('/dashboard')
+          }}
+          className="w-full py-3 px-6 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
+        >
+          <GoGraph className="font-semibold text-lg"/> Dashboard
+        </button>
+
+
+        <button
+          onClick={async () => {
+            await logout(setSession);
+          }}
+          className="w-full py-3 px-6 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
+        >
+          Logout
         </button>
       </div>
     </div>

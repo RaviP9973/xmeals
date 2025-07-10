@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import VendorItem from "../components/VendorItem";
 import {
   FaSearch,
@@ -9,106 +9,35 @@ import {
 } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import NoDataFound from "../components/NoData";
-
-const data = [
-  {
-    id: 1,
-    name: "Sollie",
-    number: "551-769-9398",
-    address: "PO Box 99110",
-    timing: "7:20 PM",
-    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
-  },
-  {
-    id: 2,
-    name: "Aurelea",
-    number: "711-598-1815",
-    address: "17th Floor",
-    timing: "2:18 PM",
-    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
-  },
-  {
-    id: 3,
-    name: "Dall",
-    number: "320-531-3187",
-    address: "PO Box 37221",
-    timing: "11:08 PM",
-    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
-  },
-  {
-    id: 4,
-    name: "Kathye",
-    number: "562-173-5958",
-    address: "Apt 788",
-    timing: "9:28 PM",
-    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
-  },
-  {
-    id: 5,
-    name: "Ilse",
-    number: "616-366-0553",
-    address: "PO Box 5323",
-    timing: "4:24 PM",
-    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
-  },
-  {
-    id: 6,
-    name: "Kincaid",
-    number: "486-236-4128",
-    address: "Apt 1591",
-    timing: "9:33 AM",
-    image_url: ["https://placehold.co/600x400", "https://placehold.co/600x400"],
-  },
-  {
-    id: 7,
-    name: "Pia",
-    number: "949-206-0973",
-    address: "Suite 59",
-    timing: "8:07 PM",
-    image_url:["https://placehold.co/600x400", "https://placehold.co/600x400" ]
-  },
-  {
-    id: 8,
-    name: "Gustavus",
-    number: "710-889-1118",
-    address: "Suite 67",
-    timing: "6:39 AM",
-    image_url:["https://placehold.co/600x400", "https://placehold.co/600x400" ]
-  },
-  {
-    id: 9,
-    name: "Magdalen",
-    number: "795-609-3401",
-    address: "Suite 69",
-    timing: "2:04 AM",
-    image_url:["https://placehold.co/600x400", "https://placehold.co/600x400" ]
-  },
-  {
-    id: 10,
-    name: "Juliane",
-    number: "844-974-0987",
-    address: "Room 1439",
-    timing: "6:38 PM",
-    image_url:["https://placehold.co/600x400", "https://placehold.co/600x400" ]
-  },
-];
-
-const data2 = [
-  {
-    id: 1,
-    name: "Sollie",
-    number: "551-769-9398",
-    address: "PO Box 99110",
-    timing: "7:20 PM",
-    image_url:["https://placehold.co/600x400", "https://placehold.co/600x400" ]
-  },
-];
+import { fetchVendorsWithGivenStatus } from "../utils/vendor";
+import { useToast } from "../components/customtoast/CustomToast";
+import SkeletonVendorList from "../components/skeltons/vendorsSkelton";
+import { toast } from "react-toastify";
+import RejectCommentModal from "../components/AdminVendor/RejectCommentModal";
+import { useVendor } from "../context/vendorContext";
+import SearchInput from "../components/AdminVendor/SearchInput";
+import CustomLoader from "../components/CustomLoader";
 
 const tabs = [
-  { id: "existing", label: "Existing", icon: <FaUserCheck /> },
-  { id: "requests", label: "Requests", icon: <FaUserClock /> },
-  { id: "rejected", label: "Rejected", icon: <FaUserTimes /> },
-  { id: "blocked", label: "Blocked", icon: <FaUserSlash /> },
+  {
+    id: "existing",
+    label: "Existing",
+    value: "verified",
+    icon: <FaUserCheck />,
+  },
+  {
+    id: "requests",
+    label: "Requests",
+    value: "pending",
+    icon: <FaUserClock />,
+  },
+  {
+    id: "rejected",
+    label: "Rejected",
+    value: "rejected",
+    icon: <FaUserTimes />,
+  },
+  { id: "blocked", label: "Blocked", value: "blocked", icon: <FaUserSlash /> },
 ];
 const AdminVendorPage = () => {
   const location = useLocation();
@@ -116,117 +45,162 @@ const AdminVendorPage = () => {
     location.state?.defaultTab || "existing"
   );
   const [loading, setLoading] = useState(false);
-  const [vendors, setVendors] = useState([]);
+  const { vendors, setVendors,searchedVendors, setsearchedVendors ,searchQuery, setSearchQuery,searchLoading, setSearchLoading} = useVendor();
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(50);
-  const pageSize = 10;
+  const [loadingMore, setLoadingMore] = useState(false);
+  const { showToast } = useToast();
 
-  const [searchQuery, setSearchQuery] = useState("");
-  // const location = useLocation();
-  // const defaultTab = location.state?.defaultTab || "pending";
-  //   useEffect(() => {
-  //   const fetchVendors = async () => {
-  //     const from = (currentPage - 1) * pageSize;
-  //     const to = from + pageSize - 1;
+  const [showRejectModal, setShowRejectModal] = useState(false);
 
-  //     const { data, count, error } = await supabase
-  //       .from("vendors")
-  //       .select("*", { count: "exact" })
-  //       .range(from, to);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
+  const lastVendorRef = useCallback(
+    (node) => {
+      if (loadingMore || loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMoreVendors();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loadingMore, hasMore, vendors]
+  );
 
-  //     if (error) {
-  //       console.error("Error fetching vendors:", error);
-  //     } else {
-  //       setVendors(data);
-  //       setTotalCount(count);
-  //     }
-  //   };
-
-  //   fetchVendors();
-  // }, [currentPage]);
-
-  const onTabChange = async () => {
-    setLoading(true);
+  const loadMoreVendors = async () => {
+    setLoadingMore(true);
     try {
-      //call api to fetch data according to the active tab
-      // const response = await fetch(api params = activeTab)
-      // count, data
+      const lastVendor = vendors[vendors?.length - 1];
+      const selectedTab = tabs?.find((tab) => tab?.id === activeTab);
+      const status = selectedTab?.value;
+      const { data, success, error } = await fetchVendorsWithGivenStatus(
+        status,
+        5,
+        lastVendor?.rating,
+        lastVendor?.v_id
+      );
 
-      let response;
-      if (activeTab === "existing") {
-        response = data;
-      } else {
-        response = data2;
+      if (error || !success) {
+        toast.error("Error loading more cuisines");
+        return;
       }
-      //   const response = data;
-      setVendors(response);
-    } catch (error) {
-      console.error("error in fetching admin vendor page data", error);
+
+      if (data.length === 0) {
+        setHasMore(false);
+      } else {
+        setVendors((prev) => [...prev, ...data]);
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+    } finally {
+      setLoadingMore(false);
     }
-    setLoading(false);
   };
+
+  const handleRejectSubmit = (comment) => {
+    // Call your rejectVendor API here, passing the comment
+    // rejectVendor(vendor.v_id, comment);
+    // setShowRejectModal(false);
+    // const {}
+  };
+
 
   useEffect(() => {
-    onTabChange();
-    // setVendors(response.data);
-  }, [activeTab]);
+    const fetchVendors = async () => {
+      try {
+        if (loading) return;
+        setLoading(true);
+        const selectedTab = tabs?.find((tab) => tab?.id === activeTab);
+        const status = selectedTab?.value;
 
-  const handleSearch = (query) => {
-    const filteredVendors = vendors.filter((vendor) =>
-      vendor.name.toLowerCase().includes(query.toLowerCase())
-    );
-    setVendors(filteredVendors);
-  };
+        const { success, error, data } = await fetchVendorsWithGivenStatus(
+          status,
+          10,
+          null,
+          null
+        );
+
+        if (error || !success) {
+          console.error(error);
+          showToast(error);
+          setVendors([]);
+          return;
+        }
+
+        console.log(data);
+        setVendors(data);
+      } catch (error) {
+        console.log(error);
+        setVendors([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVendors();
+  }, [activeTab]);
 
   return (
     <div className="p-6 min-h-screen mx-auto bg-gray-100 w-full md:max-w-3/4">
       {/* Tabs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        {tabs.map((tab) => (
+        {tabs?.map((tab) => (
           <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            key={tab?.id}
+            onClick={() => setActiveTab(tab?.id)}
             className={`flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl font-semibold transition-all duration-300
           ${
-            activeTab === tab.id
+            activeTab === tab?.id
               ? "bg-primary text-white shadow-md scale-[1.02]"
               : "bg-light text-gray-dark hover:bg-[#e2e6ea]"
           }`}
           >
-            {tab.icon}
-            <span className="text-sm sm:text-base">{tab.label}</span>
+            {tab?.icon}
+            <span className="text-sm sm:text-base">{tab?.label}</span>
           </button>
         ))}
       </div>
 
-      {/* Search Bar */}
-      <div className="relative mb-8 flex justify-center">
-        <FaSearch className="absolute left-5 sm:left-4 top-3.5 text-gray" />
-        <input
-          type="text"
-          placeholder="Search by Name/Number"
-          className="w-full pl-11 pr-4 py-2 rounded-lg border-1 border-gray text-dark
-        focus:outline-none focus:border-gray-dark focus:border-2 transition-all duration-200"
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              // Handle search action
-              console.log("Search query:", searchQuery);
-              handleSearch(searchQuery);
-            }
-          }}
-        />
-      </div>
+      <SearchInput />
 
       {/* Vendor Lists */}
-      {loading ? (
-        <div className="text-center text-secondary font-medium">Loading...</div>
-      ) : vendors && vendors.length > 0 ? (
+      {loading || searchLoading ? (
+        <SkeletonVendorList />
+      ) : (searchedVendors?.length > 0 || (searchQuery && searchQuery.trim() !== "")) ? (
+        searchedVendors?.length > 0 ? (
+          <div className="space-y-4 animate-fade-in">
+            {searchedVendors.map((vendor) => (
+              <VendorItem
+                key={vendor?.v_id}
+                vendor={vendor}
+                setShowRejectModal={setShowRejectModal}
+                loadingMore={loadingMore}
+                activeTab={activeTab}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-danger font-semibold">
+            <NoDataFound />
+          </div>
+        )
+      ) : vendors && vendors?.length > 0 ? (
         <div className="space-y-4 animate-fade-in">
-          {vendors.map((vendor) => (
-            <VendorItem key={vendor.id} vendor={vendor} />
-          ))}
+          {vendors?.map((vendor, index) => {
+            const isLast = index === vendors?.length - 1;
+
+            return (
+              <VendorItem
+                key={vendor?.v_id}
+                ref={isLast ? lastVendorRef : null}
+                vendor={vendor}
+                setShowRejectModal={setShowRejectModal}
+                loadingMore={loadingMore}
+                activeTab={activeTab}
+              />
+            );
+          })}
         </div>
       ) : (
         <div className="text-center text-danger font-semibold">
@@ -234,26 +208,13 @@ const AdminVendorPage = () => {
         </div>
       )}
 
-      <div className="flex justify-center mt-6 gap-2">
-        {Array.from(
-          { length: Math.ceil(totalCount / pageSize) },
-          (_, i) => i + 1
-        ).map((page) => (
-          <button
-            key={page}
-            onClick={() => setCurrentPage(page)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
-        ${
-          page === currentPage
-            ? "bg-[#007bff] text-white shadow"
-            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-        }
-      `}
-          >
-            {page}
-          </button>
-        ))}
-      </div>
+      <RejectCommentModal
+        open={showRejectModal}
+        onClose={() => setShowRejectModal(false)}
+        onSubmit={handleRejectSubmit}
+      />
+
+      {loadingMore && <CustomLoader />}
     </div>
   );
 };

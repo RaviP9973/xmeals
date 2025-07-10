@@ -12,7 +12,7 @@ import "swiper/css/free-mode";
 
 // import required modules
 import { Autoplay, Pagination, Navigation, FreeMode } from "swiper/modules";
-import ImageModal from "./ImageModal";
+// import ImageModal from "./ImageModal";
 
 export default function ImageSlider({ images }) {
   return (
