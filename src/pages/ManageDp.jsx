@@ -12,8 +12,6 @@ import {
 } from "react-icons/fa";
 
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
-
-
 import { MdDateRange, MdOutlinePlace } from "react-icons/md";
 import ImageSlider from "../components/ImageSlider";
 import { MdOutlinePermIdentity } from "react-icons/md";
@@ -109,6 +107,8 @@ const ManageDp = () => {
             </button>
           </div>
         </div>
+
+        
 
         {/* Right Side - Status and Actions */}
         <div className="space-y-2 text-right ">
