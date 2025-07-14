@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { supabase } from "../../supabase-client";
+import { supabase } from "../../supabaseclient";
 
 const Referral = () => {
   const [referralCode, setReferralCode] = useState("");
