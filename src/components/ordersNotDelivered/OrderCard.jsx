@@ -1,5 +1,37 @@
-const OrderCard = ({ order, showAllMap ,toggleShowAll}) => {
+import { useState } from "react";
+import { useToast } from "../customtoast/CustomToast";
+import { forceAssignDeliveryPartner } from "../../utils/order";
+import SearchDeliveryPartnerModal from "./SearchDeliveryPartnerModal";
+
+const OrderCard = ({ order, showAllMap ,toggleShowAll,setOrders}) => {
   
+  const {showToast } = useToast();
+  const [dpLoading,setDpLoading] = useState(false);
+  const [openModal,setOpenModal] = useState(false);
+
+
+
+  const forceAssignDp = async () => {
+    try{
+      setDpLoading(true);
+      const {data,success,error} = await forceAssignDeliveryPartner(order?.order_id , "+919140312239");
+
+      if(error || !success) {
+        throw error;
+      }
+
+      console.log("data",data);
+      showToast("Delivery Partner assigned successfully", "success", "long");
+
+    }catch (error) {
+      console.error("Error assigning delivery partner:", error);
+      showToast("Failed to assign delivery partner", "error", "long");
+    }finally{
+      setDpLoading(false);
+    }
+    
+
+  }
   return (
     <div
       className="relative w-full p-4 bg-gradient-to-br from-orange-50 to-yellow-50 customRadius shadow-xl cursor-pointer"
@@ -48,13 +80,25 @@ const OrderCard = ({ order, showAllMap ,toggleShowAll}) => {
               {order?.status}
             </div>
 
-            {order?.vendor_request?.expected_dt_ms !== -1 && (
+            {/* {order?.vendor_request?.expected_dt_ms !== -1 && (
               <div className="mt-1 text-[9px] lg:text-sm text-red font-medium">
                 {`Arriving in ${
                   order?.vendor_request?.expected_dt_ms / (60 * 1000)
                 } mins`}
               </div>
-            )}
+            )} */}
+            {
+  !order?.dp_id && (
+    <button
+      className="mt-2 px-3 py-1 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold shadow border border-orange-200 transition-all duration-150 flex items-center gap-2 disabled:bg-orange-300 disabled:cursor-not-allowed"
+      style={{ minWidth: "140px" }}
+      onClick={()=>setOpenModal(prev => !prev)}
+      disabled={dpLoading}
+    >
+      Assign Delivery Partner
+    </button>
+  )
+}
           </div>
         </div>
       </div>
@@ -112,7 +156,13 @@ const OrderCard = ({ order, showAllMap ,toggleShowAll}) => {
         })}
       </div>
 
-
+<SearchDeliveryPartnerModal
+  open={openModal}
+  onClose={() => setOpenModal(prev => !prev)}
+  orderId={order?.order_id}
+  setOrders={setOrders}
+  orders={order}
+/>
     </div>
   );
 };

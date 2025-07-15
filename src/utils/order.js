@@ -88,3 +88,67 @@ export const getAllOrders = async (created_ts,order_id) => {
     return { success: false, data: null, error };
   }
 };
+
+export const forceAssignDeliveryPartner = async (order_id, mobile_number) => {
+  try {
+    console.log("i am coming here", order_id, mobile_number);
+    if (!order_id || !mobile_number) {
+      throw new Error("Order ID and mobile number are required");
+    }
+    const {data,error} = await supabase.rpc('force_assign_group_to_dp', {
+      p_order_id: order_id,
+      p_dp_contact_number: mobile_number
+    })
+
+    if(error) {
+      throw error;
+    }
+
+    return {
+      success: true,
+      data,
+      error: null,
+    };
+  } catch (error) {
+    console.error("Error assigning delivery partner:", error);
+    return {
+      success: false,
+      data: null,
+      error,
+    };
+  }
+}
+
+export const getDeliveryPartners = async (data) => {
+  try {
+    console.log("data",data);
+    const {data:dpData,error} = await supabase
+      .rpc('find_available_delivery_partners_cursor', {
+        p_location: data?.location,
+        p_radius: data?.radius,
+        p_last_ts: data?.last_ts,
+        p_last_dp_id: data?.last_dp_id,
+        p_limit: data?.limit || 10
+      })
+
+
+      console.log("dpData",dpData);
+      if(error) {
+        throw error;
+      }
+      
+      return {
+        success: true,
+        data: dpData,
+        error: null,
+      };
+
+  } catch (error) {
+    console.error("Error fetching delivery partners:", error);
+    return {
+      success: false,
+      data: null,
+      error,
+    };
+  }
+}

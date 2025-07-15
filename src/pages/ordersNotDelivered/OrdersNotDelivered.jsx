@@ -127,6 +127,7 @@ const OrdersNotDelivered = () => {
           >
             <OrderCard
               order={order}
+              setOrders={setOrders}
               showAllMap={showAllMap}
               toggleShowAll={toggleShowAll}
             />
