@@ -17,6 +17,7 @@ import OfferBannerList from "./pages/offerBanner/OfferBanner";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
 import OrdersNotDelivered from "./pages/ordersNotDelivered/OrdersNotDelivered";
+import LoginOtpBanner from "./pages/loginOtpBanner/LoginOtpBanner";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/offers" element={<OfferBannerList />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/orders" element={<OrdersNotDelivered />} />
+          <Route path="/login_otp_banner" element={<LoginOtpBanner />} />
         </Route>
         <Route
           path="/login"

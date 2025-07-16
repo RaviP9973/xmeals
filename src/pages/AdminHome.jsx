@@ -20,7 +20,7 @@ import SupportModal from "../components/modals/SupportModal";
 const AdminHome = () => {
   const navigate = useNavigate();
   const { setSession } = useAuth();
-const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center gap-8 ">
       <div className="max-w-2xl mx-auto space-y-4">
@@ -40,18 +40,27 @@ const [isModalOpen, setIsModalOpen] = useState(false);
         >
           <FaUserClock /> Vendor Requests
         </button>
+
         <button
           className="w-full py-3 px-6 bg-cyan-500 hover:bg-cyan-400 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
-       onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsModalOpen(true)}
         >
           <FaUserClock /> Manage Support Team
         </button>
-{isModalOpen && <SupportModal onClose={() => setIsModalOpen(false)} />}
-        <button className="w-full py-3 px-6 bg-[#28a745] hover:bg-[#218838] text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
-        onClick={() => {
-          navigate('/orders')
-        }}
+        {isModalOpen && <SupportModal onClose={() => setIsModalOpen(false)} />}
 
+        <button className="w-full py-3 px-6 bg-red hover:bg-red-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
+          onClick={() => {
+            navigate('/login_otp_banner')
+          }}
+        >
+          <CiDeliveryTruck className="text-lg font-bold" /> Login/Otp Banner
+        </button>
+
+        <button className="w-full py-3 px-6 bg-[#28a745] hover:bg-[#218838] text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
+          onClick={() => {
+            navigate('/orders')
+          }}
         >
           <CiDeliveryTruck className="text-lg font-bold" /> Orders (Not Yet
           Delivered)
@@ -79,13 +88,13 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           <BiSolidOffer /> Manage Offers
         </button>
 
- <button
+        <button
           onClick={async () => {
             navigate('/dashboard')
           }}
           className="w-full py-3 px-6 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
         >
-          <GoGraph className="font-semibold text-lg"/> Dashboard
+          <GoGraph className="font-semibold text-lg" /> Dashboard
         </button>
 
 

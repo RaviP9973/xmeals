@@ -20,7 +20,7 @@ export const TABLES = {
   OFFER_BANNER: 'offer_banner',
   ITEM:"item",
   SUPPORT_TEAM: 'support_team',
-  
+  LOGIN_BANNERS: 'login_banner',
 };
 
 export const COLUMNS = {
@@ -94,5 +94,12 @@ export const COLUMNS = {
     SUPPORT_TEAM: {
     USER_ID: "user_id",
     STATUS: "status"
+  },
+  LOGIN_BANNERS:{
+    ID: "id",
+    MOBILE_IMAGE_URL: "mobile_image_url",
+    PC_IMAGE_URL: "pc_image_url",
+    LINK: "link",
+    CREATED_AT: "created_at"
   }
 };
