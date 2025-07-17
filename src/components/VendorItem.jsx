@@ -87,7 +87,7 @@ const VendorItem = forwardRef(
         }
 
         showToast("Venor aproved", "success", "long");
-        setVendors((prev) => prev.filter((v) => v.v_id !== v_id));
+        setVendors((prev) => prev.map((v) => v.v_id !== v_id ? v : { ...v, status: "verified" }));
       } catch (error) {
         console.error(error);
         showToast("Error while aproving the vendor", "error", "long");
@@ -209,10 +209,14 @@ const VendorItem = forwardRef(
                       </>
                     )}
                 </p>
-                              <p className="font-medium text-secondary flex gap-1 items-center">
-                                <MdOutlineWatchLater className="text-lg text-black/80" />
-                                {new Date(vendor.created_at).toLocaleString()}
-                              </p>
+                <p className="font-medium text-secondary flex gap-1 items-center">
+                  <MdOutlineWatchLater className="text-lg text-black/80" />
+                  {new Date(vendor.created_at).toLocaleString()}
+                </p>
+
+                <p className="font-medium text-secondary flex gap-1 items-center">
+                  Status: <span className="capitalize">{vendor?.status || "NA"}</span>
+                </p>
               </div>
             </div>
           </div>
@@ -238,8 +242,10 @@ const VendorItem = forwardRef(
                   }
                   handleAprove(vendor?.v_id);
                 }}
+
+                disabled={vendor?.status === "verified"}
                 aria-label="Approve"
-                className="flex items-center gap-2 px-4 py-2 bg-success/10 text-success hover:bg-success/20 transition-all text-sm font-semibold rounded-lg border border-green-200 shadow-sm"
+                className="flex items-center gap-2 px-4 py-2 bg-success/10 text-success hover:bg-success/20 transition-all text-sm font-semibold rounded-lg border border-green-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <FaCheckCircle className="text-lg" /> Approve
               </button>
@@ -261,14 +267,16 @@ const VendorItem = forwardRef(
                   }
                 }}
                 aria-label="Reject"
-                className="flex items-center gap-2 px-4 py-2 bg-danger/10 text-danger hover:bg-danger/20 transition-all text-sm font-semibold rounded-lg border border-red-200 shadow-sm"
+                className="flex items-center gap-2 px-4 py-2 bg-danger/10 text-danger hover:bg-danger/20 transition-all text-sm font-semibold rounded-lg border border-red-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+
+                disabled={activeTab === "requests" && vendor?.status === "rejected" || activeTab === "blocked" && vendor?.status === "verified" || activeTab === "existing" && vendor?.status === "blocked"}
               >
                 <FaBan className="text-lg" />{" "}
                 {activeTab === "existing"
                   ? "Block"
                   : activeTab === "blocked"
-                  ? "Unblock"
-                  : "Reject"}
+                    ? "Unblock"
+                    : "Reject"}
               </button>
             )}
           </div>

@@ -158,7 +158,7 @@ const SearchDeliveryPartnerModal = ({
       showToast("Delivery Partner assigned successfully", "success", "long");
       // Remove the order card from the list
       if (setOrders && orders) {
-        setOrders((prev) => prev.filter((o) => o.order_id !== orderId));
+        setOrders((prev) => prev.map((o) => o.order_id !== orderId ? o : { ...o, dp_id: partner.dp_id }));
       }
       onClose();
     } catch (err) {

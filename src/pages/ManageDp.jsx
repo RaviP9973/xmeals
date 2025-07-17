@@ -147,40 +147,6 @@ const ManageDp = () => {
           <div className="mb-2" key={index}>
             <DpCardSkeleton />
           </div>
-        // </div>
-
-        
-
-        // {/* Right Side - Status and Actions */}
-        // <div className="space-y-2 text-right ">
-        //   <p className="text-dark font-medium flex items-center justify-end gap-2">Status: 
-        //     <IoCheckmarkCircleSharp className="text-xl text-success"/>
-        //     </p>
-        //   <p className="text-gray text-sm">Orders with him: 3</p>
-        //   <div className="flex flex-wrap justify-between gap-2 pt-2">
-        //     <button
-        //       className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 transition-all text-sm font-semibold rounded-lg border border-green-200 shadow-sm"
-        //       onClick={handleAprove}
-        //       aria-label="Approve"
-        //     >
-        //       <FaCheckCircle className="text-lg" /> Approve
-        //     </button>
-
-        //     <button
-        //       className="flex items-center gap-2 px-4 py-2 bg-yellow-50 text-yellow-700 hover:bg-yellow-100 transition-all text-sm font-semibold rounded-lg border border-yellow-200 shadow-sm"
-        //       onClick={handleReject}
-        //       aria-label="Reject"
-        //     >
-        //       <FaTimes className="text-lg" /> Reject
-        //     </button>
-
-        //     <button
-        //       className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 hover:bg-red-100 transition-all text-sm font-semibold rounded-lg border border-red-200 shadow-sm"
-        //       onClick={handleBlock}
-        //       aria-label="Block"
-        //     >
-        //       <FaBan className="text-lg" /> Block
-        //     </button>
         ))
       ) : dps?.length === 0 ? (
         <NoDpFound tabLabel={tabs.find((t) => t.id === activeTab)?.label} />
