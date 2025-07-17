@@ -59,7 +59,7 @@ const DpCard = ({ dp, tab }) => {
   // Get icon and label for current status
   const statusInfo = statusIconMap[dp?.status] || {
     icon: <IoTime className="text-xl text-gray-400" />,
-    label: dp?.status,
+    label: dp?.status === "not_verified" ? "Pending" : dp?.status,
   };
 
   return (

@@ -25,7 +25,7 @@ const tabs = [
     id: "requests",
     label: "Requests",
     icon: <FaUserClock />,
-    value: "pending",
+    value: "not_verified",
   },
   { id: "blocked", label: "Blocked", icon: <FaUserSlash />, value: "blocked" },
   {
