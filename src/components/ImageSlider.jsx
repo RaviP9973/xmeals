@@ -30,14 +30,14 @@ export default function ImageSlider({ images }) {
           }}
           //   navigation={true}
           modules={[Autoplay, Pagination, FreeMode]}
-          className="mySwiper w-32 h-32"
+          className="mySwiper w-[146px] h-[146px]"
         >
           {images?.map((image, index) => (
             <SwiperSlide key={index}>
               <img
                 src={image}
 
-                className="w-32 h-32 cursor-pointer object-cover rounded-lg shadow-md transition duration-300"
+                className="w-full h-full cursor-pointer object-cover rounded-lg shadow-md transition duration-300"
               />
             </SwiperSlide>
           ))}

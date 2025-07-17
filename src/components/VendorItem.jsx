@@ -14,6 +14,7 @@ import {
   MdLocalPhone,
   MdOutlinePermIdentity,
   MdOutlinePlace,
+  MdOutlineWatchLater,
   MdPlace,
   MdTimelapse,
 } from "react-icons/md";
@@ -157,7 +158,7 @@ const VendorItem = forwardRef(
 
             {/* Vendor Info */}
             <div className="space-y-1 text-dark ">
-              <h3 className="text-2xl font-semibold text-primary truncate max-w-[240px]">
+              <h3 className="text-2xl font-semibold text-primary truncate max-w-[640px]">
                 {vendor?.shop_name}
               </h3>
               <div className="gird grid-cols-1 gap-x-8 text-sm text-gray-dark space-y-1">
@@ -208,6 +209,10 @@ const VendorItem = forwardRef(
                       </>
                     )}
                 </p>
+                              <p className="font-medium text-secondary flex gap-1 items-center">
+                                <MdOutlineWatchLater className="text-lg text-black/80" />
+                                {new Date(vendor.created_at).toLocaleString()}
+                              </p>
               </div>
             </div>
           </div>
