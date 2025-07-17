@@ -15,8 +15,8 @@ export const VendorProvider = ({ children }) => {
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
   const [searchedVendors, setsearchedVendors] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [searchLoading, setSearchLoading] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchLoading, setSearchLoading] = useState("");
   const handleBlockVendor = async (v_id) => {
     try {
       setLoading(true);
@@ -31,7 +31,9 @@ export const VendorProvider = ({ children }) => {
       }
       showToast("Vendor Blocked", "success", "long");
       // Remove vendor from list
-      setVendors((prev) => prev.filter((v) => v.v_id !== v_id));
+      setVendors((prev) =>
+        prev.map((v) => (v.v_id !== v_id ? v : { ...v, status: "blocked" }))
+      );
       return true;
     } catch (error) {
       showToast("Error blocking vendor", "error", "long");
@@ -55,7 +57,9 @@ export const VendorProvider = ({ children }) => {
       }
       showToast("Vendor Unblocked", "success", "long");
       // Remove vendor from list
-      setVendors((prev) => prev.filter((v) => v.v_id !== v_id));
+      setVendors((prev) =>
+        prev.map((v) => (v.v_id !== v_id ? v : { ...v, status: "verified" }))
+      );
       return true;
     } catch (error) {
       showToast("Error unblocking vendor", "error", "long");
@@ -92,6 +96,7 @@ export const VendorProvider = ({ children }) => {
       }
 
       showToast("Venor rejected successfully", "error", "long");
+      setVendors((prev) => prev.map((v) => v.v_id !== vendorId  ? v : { ...v, status: "rejected" }));
     } catch (error) {
       console.error(error);
       showToast("Error while aproving the vendor", "error", "long");
@@ -113,9 +118,12 @@ export const VendorProvider = ({ children }) => {
     setVendors,
     loading,
     setLoading,
-    searchedVendors, setsearchedVendors,
-    searchQuery, setSearchQuery,
-    searchLoading, setSearchLoading
+    searchedVendors,
+    setsearchedVendors,
+    searchQuery,
+    setSearchQuery,
+    searchLoading,
+    setSearchLoading,
   };
   return (
     <VendorContext.Provider value={value}>{children}</VendorContext.Provider>

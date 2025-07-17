@@ -124,9 +124,10 @@ const DpCard = ({ dp, tab }) => {
         <div className="flex flex-wrap justify-between gap-2 pt-2">
           {tab !== "existing" && (
             <button
-              className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 transition-all text-sm font-semibold rounded-lg border border-green-200 shadow-sm"
+              className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 transition-all text-sm font-semibold rounded-lg border border-green-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => handleAproveDp(dp.dp_id)}
               aria-label="Approve"
+              disabled={dp?.status === "verified"}
             >
               <FaCheckCircle className="text-lg" /> Approve
             </button>
@@ -135,9 +136,10 @@ const DpCard = ({ dp, tab }) => {
           {/* Reject button: show except on 'rejected' tab */}
           {tab !== "rejected" && (
             <button
-              className="flex items-center gap-2 px-4 py-2 bg-yellow-50 text-yellow-700 hover:bg-yellow-100 transition-all text-sm font-semibold rounded-lg border border-yellow-200 shadow-sm"
+              className="flex items-center gap-2 px-4 py-2 bg-yellow-50 text-yellow-700 hover:bg-yellow-100 transition-all text-sm font-semibold rounded-lg border border-yellow-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => handleRejectDp(dp.dp_id)}
-              aria-label="Reject"
+              // aria-label="Reject"
+              disabled={dp?.status === "rejected"}
             >
               <FaTimes className="text-lg" /> Reject
             </button>
@@ -145,17 +147,20 @@ const DpCard = ({ dp, tab }) => {
           {/* Block/Unblock button: show 'Block' except on 'blocked' tab, show 'Unblock' only on 'blocked' tab */}
           {tab === "blocked" ? (
             <button
-              className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 transition-all text-sm font-semibold rounded-lg border border-blue-200 shadow-sm"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 transition-all text-sm font-semibold rounded-lg border border-blue-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed  "
               onClick={() => handleUnBlockDp(dp.dp_id)}
               aria-label="Block"
+              disabled={dp?.status === "verified"}
             >
               <FaCheckCircle className="text-lg" /> Unblock
             </button>
           ) : (
             <button
-              className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 hover:bg-red-100 transition-all text-sm font-semibold rounded-lg border border-red-200 shadow-sm"
+              className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 hover:bg-red-100 transition-all text-sm font-semibold rounded-lg border border-red-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => handleBlockDp(dp.dp_id)}
-              aria-label="Block"
+              // aria-label="Block"
+
+              disabled={dp?.status === "blocked"}
             >
               <FaBan className="text-lg" /> Block
             </button>

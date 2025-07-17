@@ -142,7 +142,6 @@ const CuisineManager = () => {
         image_url: imageUrl, // Use the uploaded or existing image URL
       };
 
-      console.log("line 140 reached");
 
       if (cuisine?.c_id) {
         const {data,error,success} = await updateCuisine(cuisineToSave, session?.user?.id);

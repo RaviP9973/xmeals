@@ -25,7 +25,7 @@ export const DpProvider = ({ children }) => {
         return;
       }
       showToast("Delivery Partner approved", "success", "long");
-      setDps((prev) => prev.filter((d) => d.dp_id !== dp_id));
+      setDps((prev) => prev.map((d) => d.dp_id !== dp_id ? d : { ...d, status: "verified" }));
     } catch (error) {
       showToast("Error while approving the delivery partner", "error", "long");
     } finally {
@@ -47,7 +47,7 @@ export const DpProvider = ({ children }) => {
         return;
       }
       showToast("Delivery Partner rejected", "success", "long");
-      setDps((prev) => prev.filter((d) => d.dp_id !== dp_id));
+      setDps((prev) => prev.map((d) => d.dp_id !== dp_id ? d : { ...d, status: "rejected" }));
     } catch (error) {
       showToast("Error while rejecting the delivery partner", "error", "long");
     } finally {
@@ -68,7 +68,7 @@ export const DpProvider = ({ children }) => {
         return;
       }
       showToast("Delivery Partner blocked", "success", "long");
-      setDps((prev) => prev.filter((d) => d.dp_id !== dp_id));
+      setDps((prev) => prev.map((d) => d.dp_id !== dp_id ? d : { ...d, status: "verified" }));
     } catch (error) {
       showToast("Error while blocking the delivery partner", "error", "long");
     } finally {
@@ -88,8 +88,8 @@ export const DpProvider = ({ children }) => {
         console.error(error);
         return;
       }
-      showToast("Delivery Partner unblocked", "success", "long");
-      setDps((prev) => prev.filter((d) => d.dp_id !== dp_id));
+      showToast("Delivery Partner blocked", "success", "long");
+      setDps((prev) => prev.map((d) => d.dp_id !== dp_id ? d : { ...d, status: "blocked" }));
     } catch (error) {
       showToast("Error while unblocking the delivery partner", "error", "long");
     } finally {
