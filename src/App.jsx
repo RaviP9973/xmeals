@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
 import OrdersNotDelivered from "./pages/ordersNotDelivered/OrdersNotDelivered";
 import LoginOtpBanner from "./pages/loginOtpBanner/LoginOtpBanner";
+import LiveDataMap from "./pages/livedata/SeeLiveData";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/orders" element={<OrdersNotDelivered />} />
           <Route path="/login_otp_banner" element={<LoginOtpBanner />} />
+          <Route path="/live_data_map" element={<LiveDataMap />} />
         </Route>
         <Route
           path="/login"

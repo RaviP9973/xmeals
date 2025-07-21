@@ -5,6 +5,7 @@ import {
   FaUserClock,
   FaUserTimes,
   FaUserSlash,
+  FaDatabase,
 } from "react-icons/fa";
 import { BiSolidOffer } from "react-icons/bi";
 
@@ -47,6 +48,14 @@ const AdminHome = () => {
         >
           <FaUserClock /> Manage Support Team
         </button>
+
+        <button
+          className="w-full py-3 px-6 bg-cyan-500 hover:bg-cyan-400 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
+          onClick={() => navigate('/live_data_map')}
+        >
+          <FaDatabase /> See Live Data
+        </button>
+
         {isModalOpen && <SupportModal onClose={() => setIsModalOpen(false)} />}
 
         <button className="w-full py-3 px-6 bg-red hover:bg-red-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out flex items-center justify-center gap-2"
