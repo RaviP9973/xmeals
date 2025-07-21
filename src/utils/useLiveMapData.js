@@ -6,6 +6,7 @@ import { getDistanceFromLatLonInKm } from "../utils/geo";
 
 const RADIUS_KM = 10;
 
+// To display icons clear on overlap 
 function jitterCoords(arr, latKey, lngKey) {
   const res = [];
   const seen = new Set();
@@ -13,7 +14,7 @@ function jitterCoords(arr, latKey, lngKey) {
     let lat = item[latKey], lng = item[lngKey];
     const key = `${lat},${lng}`;
     if (seen.has(key)) {
-      const jitter = (Math.random() - 0.5) * 0.0003;
+      const jitter = (Math.random() - 0.5) * 0.0010;
       lat += jitter;
       lng += jitter;
     }
@@ -23,23 +24,8 @@ function jitterCoords(arr, latKey, lngKey) {
   return res;
 }
 
-// actual Haversine for completeness, otherwise pull from common geo.js
-// export function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-//   function deg2rad(deg) { return deg * (Math.PI / 180); }
-//   const R = 6371;
-//   const dLat = deg2rad(lat2 - lat1);
-//   const dLon = deg2rad(lon2 - lon1);
-//   const a =
-//     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-//     Math.cos(deg2rad(lat1)) *
-//     Math.cos(deg2rad(lat2)) *
-//     Math.sin(dLon / 2) *
-//     Math.sin(dLon / 2);
-//   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-//   return R * c;
-// }
 
-// --- MAIN HOOK: Handles fetch + process for use in your map page
+//Handles fetch + process for use in your map page
 export function useLiveMapData(selectedLocation, showToast) {
   const [orders, setOrders] = useState([]);
   const [dps, setDps] = useState([]);

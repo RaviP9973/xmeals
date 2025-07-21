@@ -53,7 +53,7 @@ const { isLoaded } = useJsApiLoader({
             navigator.geolocation.getCurrentPosition(
                 position => {
                     setSelectedLocation({
-                        label: "Your Location",
+                        label: "",
                         lat: position.coords.latitude,
                         lng: position.coords.longitude,
                     });
@@ -181,7 +181,7 @@ const { isLoaded } = useJsApiLoader({
                                 ))}
                             </div>
                         )}
-                        {selectedLocation && selectedLocation.label && (
+                        {selectedLocation && selectedLocation.label !== '' && (
                             <div className="text-center w-full py-2 mt-1 mb-[-8px] text-black font-semibold rounded">
                                 <span className="flex items-center justify-center gap-3"><LocateFixedIcon color="#fe4432" /> {selectedLocation.label}</span>
                             </div>
@@ -295,11 +295,11 @@ const { isLoaded } = useJsApiLoader({
                                     mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                                     getPixelPositionOffset={getPixelPositionOffset}
                                 >
-                                    <FaUserCheck size={30} color="#17B300" style={{
+                                    <FaUserCheck size={27} color="#17B300" style={{
                                         filter: "drop-shadow(0 1px 2px #555)",
                                         background: "white",
                                         borderRadius: "50%",
-                                        padding: "2.5px"
+                                        padding: "3.5px"
                                     }} title="Available Vendor" />
                                 </OverlayView>
                             ))}
@@ -310,11 +310,11 @@ const { isLoaded } = useJsApiLoader({
                                     mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                                     getPixelPositionOffset={getPixelPositionOffset}
                                 >
-                                    <FaUserTimes size={30} color="red" style={{
+                                    <FaUserTimes size={27} color="red" style={{
                                         filter: "drop-shadow(0 1px 2px #555)",
                                         background: "white",
                                         borderRadius: "50%",
-                                        padding: "2.5px"
+                                        padding: "3.5px"
                                     }} title="Unavailable Vendor" />
                                 </OverlayView>
                             ))}
